@@ -1,0 +1,23 @@
+{
+  "name": "bookish",
+  "version": "1.0.0",
+  "description": "bookish",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timjsoftwire/Bookish.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/timjsoftwire/Bookish/issues"
+  },
+  "homepage": "https://github.com/timjsoftwire/Bookish#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pg-promise": "^8.7.3"
+  }
+}
