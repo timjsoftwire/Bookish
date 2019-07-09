@@ -1,10 +1,9 @@
 async function verifyUser(req, res, database) {
-    const user = req.query.user;
+    const username = req.query.user;
     const pass = req.query.password;
     try {
-        const result = await database.many("select id from member where name = $1 and password = $2", [user, pass]);
-       
-        return true;
+        const user = await findUser(username, database);
+        return user.password === pass;
     } catch (err) {
         console.log(err);
         
@@ -12,4 +11,11 @@ async function verifyUser(req, res, database) {
     return false;
 }
 
-module.exports = {verifyUser};
+async function findUser(user, database) {
+    const answer = await database.one("select * from member where name = $1", user);
+    return answer;
+
+}
+
+
+module.exports = {verifyUser, findUser };

@@ -1,9 +1,34 @@
-const {verifyUser} = require('./login');
-const jwt = require('jsonwebtoken')
-
+const {verifyUser, findUser} = require('./login');
+const fs = require('fs');
 const express = require('express');
 const pgPromise = require('pg-promise')();
-const fs = require('fs');
+const passport = require('passport');
+const jwt = require('jsonwebtoken');
+const JwtStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
+
+const private = fs.readFileSync('./private.key', 'utf8');
+const public = fs.readFileSync('./public.key', 'utf8');
+
+const jwtStratOptions = {
+    secretOrKey: public,
+    jwtFromRequest: ExtractJwt.fromUrlQueryParameter("token"),
+}
+
+passport.use(new JwtStrategy(jwtStratOptions, function(jwt_payload, done) {
+    findUser(jwt_payload.user, database)
+        .then((user) => {
+            if (user) {
+                return done(null, user);
+            } else {
+                return done(null, false);
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            return done(err, null);
+        });
+}));
 
 const app = express();
 const expressPort = 3000;
@@ -25,34 +50,34 @@ const jwtoptions = {
     expiresIn: '12h',
     algorithm: 'RS256',
 };
-const private = fs.readFileSync('./private.key', 'utf8');
-const public = fs.readFileSync('./public.key', 'utf8');
 
-app.get('/books', (req, res) => {
-    database.many("select * from book")
-    .then(function (data) {
-        res.send(data);
-    })
-    .catch(function(error) {
-        console.log(error);
-    })
-});
+app.get('/books',
+    passport.authenticate('jwt', {session: false}),
+    (req, res) => {
+        database.many("select * from book")
+        .then(function (data) {
+            res.send(data);
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
+    }
+);
 
 app.get('/login', (req, res) => {
     verifyUser(req, res, database).then(data => {
         if (data) { 
-           
-
-
             let token = jwt.sign({user: req.query.user}, private, jwtoptions);
-            console.log(token);
-            res.send("Verified!");
+            res.json( {
+                token: token,
+                success: true,
+                message: "Authentication successful"});
         } else {
-            res.send("We don't know who you are...");
-        }  
-    })
-    
-        
+            res.json({
+                success: false,
+                message: "Authentication failed"});
+        }
+    })   
 });
 
 app.listen(expressPort, () => console.log(`Example app listening on port ${expressPort}!`))
