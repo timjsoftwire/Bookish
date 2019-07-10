@@ -1,7 +1,6 @@
-
 const { jwtAuth } = require ('./auth');
 const { Router } = require('express');
-const { login } = require('./account');
+const { login, register } = require('./account');
 
 class AccountController {
     constructor() {
@@ -14,8 +13,8 @@ class AccountController {
         const user = request.query.user;
         const pass = request.query.pass;
         try {
-            const book = await register(isbn);
-            response.send(book);
+            const data = await register(user, pass);
+            response.send(data);
         } catch (err) {
             response.send(err);
         }
