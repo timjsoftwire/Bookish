@@ -6,7 +6,7 @@ const fs = require('fs');
 
 const private = fs.readFileSync('./private.key', 'utf8');
 
-const {findUser} = require('./login');
+const {findUser} = require('./databaseAccounts');
 const {database} = require('./databaseSetup');
 
 const jwtoptions = {
@@ -33,8 +33,10 @@ passport.use(new JwtStrategy(jwtStratOptions, (jwt_payload, done) => {
         });
 }));
 
-exports.sign = function(user) {
+function sign(user) {
     return jwt.sign({user}, private, jwtoptions);
 }
 
-exports.jwtAuth = passport.authenticate('jwt', {session: false});
+const jwtAuth = passport.authenticate('jwt', {session: false});
+
+module.exports = { sign, jwtAuth };
