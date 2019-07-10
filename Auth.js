@@ -7,7 +7,7 @@ const fs = require('fs');
 const private = fs.readFileSync('./private.key', 'utf8');
 
 const {findUser} = require('./login');
-const {database} = require('./database');
+const {database} = require('./databaseSetup');
 
 const jwtoptions = {
     expiresIn: '12h',
@@ -19,10 +19,8 @@ const jwtStratOptions = {
 }
 
 passport.use(new JwtStrategy(jwtStratOptions, (jwt_payload, done) => {
-    console.log("Running strat");
     findUser(jwt_payload.user, database)
         .then((user) => {
-            console.log(user);
             if (user) {
                 return done(null, user);
             } else {

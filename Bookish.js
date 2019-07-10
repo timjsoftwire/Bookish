@@ -1,6 +1,8 @@
 const {verifyUser} = require('./login');
 const {sign, jwtAuth} = require('./auth');
-const {database} = require('./database');
+const {database} = require('./databaseSetup');
+
+const BookRoutes = require ('./bookController');
 
 const express = require('express');
 
@@ -9,7 +11,7 @@ const app = express();
 const expressPort = 3000;
 
 
-app.get('/books',
+/*app.get('/books',
     jwtAuth,
     (req, res) => {
         database.many("select * from book")
@@ -20,7 +22,7 @@ app.get('/books',
             console.log(error);
         });
     }
-);
+);*/
 
 app.get('/login', (req, res) => {
     verifyUser(req, res, database).then(data => {
@@ -38,4 +40,6 @@ app.get('/login', (req, res) => {
     })
 });
 
-app.listen(expressPort, () => console.log(`Example app listening on port ${expressPort}!`))
+app.listen(expressPort, () => console.log(`Example app listening on port ${expressPort}!`));
+
+app.use('/books', BookRoutes);
