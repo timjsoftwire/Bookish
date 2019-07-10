@@ -10,20 +10,6 @@ const express = require('express');
 const app = express();
 const expressPort = 3000;
 
-
-/*app.get('/books',
-    jwtAuth,
-    (req, res) => {
-        database.many("select * from book")
-        .then(function (data) {
-            res.send(data);
-        })
-        .catch(function(error) {
-            console.log(error);
-        });
-    }
-);*/
-
 app.get('/login', (req, res) => {
     verifyUser(req, res, database).then(data => {
         if (data) {

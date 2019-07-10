@@ -2,7 +2,7 @@
 const { jwtAuth } = require ('./auth');
 const { database } = require ('./databaseSetup');
 const { Router } = require('express');
-const { createBook, getBook } = require('./database');
+const { createBook, getBook, getBooks } = require('./database');
 
  
 class BookController {
@@ -10,7 +10,7 @@ class BookController {
         this.router = Router();
         this.router.get('/:isbn', jwtAuth, this.getBookRoute.bind(this));
         this.router.post('/', jwtAuth, this.createBookRoute.bind(this));
-        
+        this.router.get('/', jwtAuth, this.showBooksRoute.bind(this));
     }
  
     async getBookRoute(request, response) {
@@ -32,6 +32,17 @@ class BookController {
         try {
             await createBook(title, isbn, fname, lname);
             response.send({isbn});
+        } catch (err) {
+            response.send(err);
+        }
+    }
+
+    async showBooksRoute(request, response) {
+        try {
+            // conditions is optional, contains {fname: ..., lname: ..., title: ...}
+            const conditions = request.query;
+            const books = await getBooks(conditions);
+            response.send(books);
         } catch (err) {
             response.send(err);
         }
