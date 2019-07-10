@@ -1,8 +1,6 @@
-// BookController.js
 const { jwtAuth } = require ('./auth');
-const { database } = require ('./databaseSetup');
 const { Router } = require('express');
-const { createBook, getBook, getBooks } = require('./database');
+const { createBook, getBook, getBooks } = require('./databaseBooks');
 
  
 class BookController {

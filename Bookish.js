@@ -3,6 +3,7 @@ const {sign, jwtAuth} = require('./auth');
 const {database} = require('./databaseSetup');
 
 const BookRoutes = require ('./bookController');
+const LoanRoutes = require ('./loanController');
 
 const express = require('express');
 
@@ -29,3 +30,4 @@ app.get('/login', (req, res) => {
 app.listen(expressPort, () => console.log(`Example app listening on port ${expressPort}!`));
 
 app.use('/books', BookRoutes);
+app.use('/loans', LoanRoutes);
