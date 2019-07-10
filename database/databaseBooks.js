@@ -3,7 +3,7 @@ const {database} = require('./databaseSetup');
 async function createBook(title, isbn, fname, lname) {
     const row = await getAuthorId(fname, lname);
     if (row) {
-        await database.query('insert into book (title, authorid, isbn) values ($1, $2, $3)',[title, row.id, isbn]);
+        await database.query('insert into book (title, authorid, isbn) values ($1, $2, $3)',[title, row, isbn]);
     } else {
         await database.query("insert into author (fname, lname) values ($1, $2)", [fname, lname]);
         await createBook(title, isbn, fname, lname);
@@ -39,6 +39,7 @@ async function getBooks(conditions) {
 
 async function getAuthorId(fname, lname) {
     const row = await database.oneOrNone("select * from author where fname = $1 and lname = $2", [fname, lname]);
+    if (!row) return null;
     return row.id;
 }
 

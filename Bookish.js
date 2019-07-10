@@ -1,7 +1,7 @@
 
-const BookRoutes = require ('./bookController');
-const LoanRoutes = require ('./loanController');
-const AccountRoutes = require ('./accountController')
+const BookRoutes = require ('./controllers/bookController');
+const LoanRoutes = require ('./controllers/loanController');
+const AccountRoutes = require ('./controllers/accountController')
 
 const express = require('express');
 

@@ -1,6 +1,6 @@
-const { jwtAuth } = require ('./auth');
+const { jwtAuth } = require ('../auth');
 const { Router } = require('express');
-const { getLoans } = require('./databaseLoans');
+const { getLoans } = require('../database/databaseLoans');
 
 class LoanController {
     constructor() {

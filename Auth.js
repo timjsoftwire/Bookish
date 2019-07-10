@@ -6,8 +6,8 @@ const fs = require('fs');
 
 const private = fs.readFileSync('./private.key', 'utf8');
 
-const {findUser} = require('./databaseAccounts');
-const {database} = require('./databaseSetup');
+const {findUser} = require('./database/databaseAccounts');
+const {database} = require('./database/databaseSetup');
 
 const jwtoptions = {
     expiresIn: '12h',

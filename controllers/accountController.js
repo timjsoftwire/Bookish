@@ -1,4 +1,4 @@
-const { jwtAuth } = require ('./auth');
+const { jwtAuth } = require ('../auth');
 const { Router } = require('express');
 const { login, register } = require('./account');
 
@@ -12,6 +12,7 @@ class AccountController {
     async registerRoute(request, response) {
         const user = request.query.user;
         const pass = request.query.pass;
+        
         try {
             const data = await register(user, pass);
             response.send(data);

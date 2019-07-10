@@ -1,5 +1,5 @@
-const { findUser, registerUser } = require('./databaseAccounts');
-const auth = require('./auth');
+const { findUser, registerUser } = require('../database/databaseAccounts');
+const auth = require('../auth');
 
 async function verifyUser(username, pass) {
     try {

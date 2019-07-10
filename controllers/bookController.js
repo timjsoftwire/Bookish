@@ -1,6 +1,6 @@
-const { jwtAuth } = require ('./auth');
+const { jwtAuth } = require ('../auth');
 const { Router } = require('express');
-const { createBook, getBook, getBooks } = require('./databaseBooks');
+const { createBook, getBook, getBooks } = require('../database/databaseBooks');
 
  
 class BookController {
