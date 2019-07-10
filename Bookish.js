@@ -1,6 +1,6 @@
 const {verifyUser} = require('./login');
-const {sign, jwtAuth} = require('./Auth');
-const {database} = require('./Database');
+const {sign, jwtAuth} = require('./auth');
+const {database} = require('./database');
 
 const express = require('express');
 
@@ -24,7 +24,7 @@ app.get('/books',
 
 app.get('/login', (req, res) => {
     verifyUser(req, res, database).then(data => {
-        if (data) { 
+        if (data) {
             let token = sign(req.query.user)
             res.json( {
                 token: token,
@@ -35,7 +35,7 @@ app.get('/login', (req, res) => {
                 success: false,
                 message: "Authentication failed"});
         }
-    })   
+    })
 });
 
 app.listen(expressPort, () => console.log(`Example app listening on port ${expressPort}!`))

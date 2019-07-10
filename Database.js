@@ -1,4 +1,3 @@
-
 const pgPromise = require('pg-promise')();
 
 const cn = {
@@ -9,4 +8,4 @@ const cn = {
     password: 'book1'
 };
 
-exports.database =  pgPromise(cn);
+exports.database = pgPromise(cn);

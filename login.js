@@ -14,7 +14,6 @@ async function verifyUser(req, res, database) {
 async function findUser(user, database) {
     const answer = await database.one("select * from member where name = $1", user);
     return answer;
-
 }
 
 

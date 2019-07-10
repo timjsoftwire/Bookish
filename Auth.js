@@ -5,24 +5,24 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');
 
 const private = fs.readFileSync('./private.key', 'utf8');
-const public = fs.readFileSync('./public.key', 'utf8');
+
+const {findUser} = require('./login');
+const {database} = require('./database');
 
 const jwtoptions = {
-    issuer: 'bookish',
-    subject: 'user',
-    audience: 'users',
     expiresIn: '12h',
-    algorithm: 'RS256',
 };
 
 const jwtStratOptions = {
-    secretOrKey: public,
+    secretOrKey: private,
     jwtFromRequest: ExtractJwt.fromUrlQueryParameter("token"),
 }
 
-passport.use(new JwtStrategy(jwtStratOptions, function(jwt_payload, done) {
+passport.use(new JwtStrategy(jwtStratOptions, (jwt_payload, done) => {
+    console.log("Running strat");
     findUser(jwt_payload.user, database)
         .then((user) => {
+            console.log(user);
             if (user) {
                 return done(null, user);
             } else {
