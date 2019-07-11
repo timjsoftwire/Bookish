@@ -22,8 +22,8 @@ export default function Books() {
 function Book(book) {
     return (
         <div className="book" key={book.isbn}>
-            <h2>{book.title} <small>({book.isbn})</small></h2>
-            <h3>by {book.author.lname}, {book.author.fname}</h3>
+            <h2>{book.title} <small>by {book.author.lname}, {book.author.fname} <small>(ISBN: {book.isbn})</small></small></h2>
+            <p>We have {book.copies} {book.copies === 1 ? "copy" : "copies"} of this book!</p>
         </div>
     );
 }

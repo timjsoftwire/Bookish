@@ -1,4 +1,4 @@
-const {Book, Author} = require('./databaseSetup');
+const {Book, Author, Entry} = require('./databaseSetup');
 
 async function createBook(title, isbn, fname, lname) {
     const row = await getAuthorId(fname, lname);
@@ -15,6 +15,15 @@ async function createBook(title, isbn, fname, lname) {
         })
         await createBook(title, isbn, fname, lname);
     }
+}
+
+async function getNumberOfCopies(bookid) {
+    const data = await Entry.findAll({
+        where: {
+            bookid: bookid
+        }
+    });
+    return data? data.length : 0;
 }
 
 async function getBook(isbn) {
@@ -39,7 +48,19 @@ async function getBooks(conditions) {
         }
     });
 
-    return books;
+    const promises = books.map(async function(book) {
+        const copyCount = await getNumberOfCopies(book.id);
+        return {
+            copies: copyCount,
+            title: book.title,
+            isbn: book.isbn,
+            author: book.author,
+            id: book.id,
+        }
+    });
+    const filteredBooks = await Promise.all(promises);
+
+    return filteredBooks;
 }
 
 async function getAuthorId(fname, lname) {
