@@ -5,17 +5,18 @@ export default function Books() {
     // TODO: separate token functionality!
     const [result, setResult] = useState(null);
 
-    
-
-
     useEffect(() => {
         const currentUrl = new URL(window.location.href);
         let params = new URLSearchParams(currentUrl.search);
 
         let bookToSearch = params.getAll("bookTitle");
+        let fnameSearch = params.getAll("fname");
+        let lnameSearch = params.getAll("lname");
 
         let url = "http://localhost:3001/books?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYSIsImlhdCI6MTU2MjgzNTIxNywiZXhwIjoxNTYyODc4NDE3fQ.m-3OoA6aSFrbwWtZV_CWQkTRSE-_4n-21pxFTZ9f-xg";
-        if (bookToSearch) {url += "&title=" + bookToSearch}
+        if (bookToSearch) url += "&title=" + bookToSearch;
+        if (fnameSearch) url += "&fname=" + fnameSearch;
+        if (lnameSearch) url += "&lname=" + lnameSearch;
 
         fetch(url)
             .then(response => response.json())
