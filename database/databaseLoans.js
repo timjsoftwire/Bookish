@@ -1,11 +1,34 @@
-const {database} = require('./databaseSetup');
+const {Member, Author, Book, Loan, Entry} = require('./databaseSetup');
 
 async function getLoans(userid) {
-    // I'm sorry.
-    const selects = "select LOWER(loandate) as lentDate, UPPER(loandate) as dueDate, label, edition, title, isbn, fname, lname";
-    const tables = " from ((loan join entry on loan.entryid = entry.id) join book on entry.bookid = book.id) join author on book.authorid = author.id";
-    const query = selects + tables + " where userid = $1";
-    const loans = await database.any(query, userid);
+
+    let loans = Loan.findAll({
+        where: {
+            userid: userid
+        },
+        include: [{
+            model: Entry,
+            include: [{
+                model: Book,
+                include: [{
+                    model: Author
+                }]
+            }]
+        }]
+    })
+
+    loans = loans.map(element => {
+        return {
+            loanDate: element.loandate,
+            label: element.entry.label,
+            edition: element.entry.edition,
+            title: element.entry.book.title,
+            isbn: element.entry.book.isbn,
+            lname: element.entry.book.author.lname,
+            fname: element.entry.book.author.fname
+        }
+    })
+
     return loans;
 }
 
