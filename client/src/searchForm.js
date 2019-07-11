@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function SearchForm() {
     return (
-        <form>
+        <form id="search">
             <label>
                 Book title: 
                 <input
